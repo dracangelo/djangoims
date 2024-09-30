@@ -6,6 +6,9 @@ from rest_framework.decorators import action
 from rest_framework import status
 from .models import InventoryItem
 from .serializers import InventoryItemSerializer
+from .models import Category
+from .serializers import CategorySerializer
+from rest_framework import generics
 
 class InventoryListView(APIView):
     def get(self, request):
@@ -43,3 +46,8 @@ class InventoryItemViewSet(viewsets.ModelViewSet):
             return Response({'status': 'Item restocked', 'new_quantity': item.quantity})
         else:
             return Response({"error": "Quantity must be greater than 0"}, status=status.HTTP_400_BAD_REQUEST)
+        
+
+class CategoryListView(generics.ListAPIView):
+    queryset = Category.objects.all()
+    serializer_class = CategorySerializer
